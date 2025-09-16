@@ -1,6 +1,8 @@
 //
 // Created by JAD on 16/09/2025.
 //
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifndef HUGEINT__UNSIGNEDHUGEINT_H_
 #define HUGEINT__UNSIGNEDHUGEINT_H_
@@ -12,13 +14,18 @@ typedef struct DigitCell {
 
 typedef struct UnsignedHugeInt {
   DigitCell *first;
-} UnsignedHugeInt ;
+} UnsignedHugeInt;
 
-UnsignedHugeInt *createUnsignedHugeIntFromString(char* stringToConvert);
-void deleteUnsignedHugeInt(UnsignedHugeInt* unsignedHugeInt);
-void displayUnsignedHugeInt(UnsignedHugeInt* unsignedHugeInt);
-UnsignedHugeInt* addUnsignedHugeInt(UnsignedHugeInt* first, UnsignedHugeInt* second);
-int countDigitsFromUnsignedHugeInt(UnsignedHugeInt* unsignedHugeInt);
-UnsignedHugeInt* simplifyUnsignedHugeInt(UnsignedHugeInt* unsignedHugeInt);
+UnsignedHugeInt *createUnsignedHugeIntFromString(char *stringToConvert);
+
+void deleteUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt);
+
+void displayUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt);
+
+UnsignedHugeInt *addUnsignedHugeInt(UnsignedHugeInt *first, UnsignedHugeInt *second);
+
+int countDigitsFromUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt);
+
+void simplifyUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt);
 
 #endif //HUGEINT__UNSIGNEDHUGEINT_H_
