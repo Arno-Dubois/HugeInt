@@ -8,6 +8,14 @@ DigitCell *createDigitCell(unsigned short digit);
 
 void deleteDigitCell(DigitCell *digitCell);
 
+int countDigitCells(DigitCell *cell);
+
+UnsignedHugeInt *addDigitCells(DigitCell *firstCell, int sizeFirst, DigitCell *secondCell, int sizeSecond);
+
+unsigned short addTwoChar(unsigned short first, unsigned short second);
+
+UnsignedHugeInt *createUnsignedHugeInt();
+
 UnsignedHugeInt *createUnsignedHugeIntFromString(char *stringToConvert) {
     UnsignedHugeInt *uhi = malloc(sizeof(UnsignedHugeInt));
     uhi->first = NULL;
@@ -38,7 +46,53 @@ void displayUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt) {
     }
 }
 
+unsigned short addTwoChar(unsigned short first, unsigned short second) {
+    return first + second - '0';
+}
+
+UnsignedHugeInt *createUnsignedHugeInt() {
+    UnsignedHugeInt *uhi = malloc(sizeof(UnsignedHugeInt));
+    uhi->first = NULL;
+    return uhi;
+};
+
+UnsignedHugeInt *addDigitCells(DigitCell *firstCell, int sizeFirst, DigitCell *secondCell, int sizeSecond) {
+    if (sizeFirst == 1 && sizeSecond == 1) {
+        UnsignedHugeInt *result = createUnsignedHugeInt();
+        result->first = createDigitCell(addTwoChar(firstCell->digit, secondCell->digit));
+        return result;
+    }
+    unsigned short firstDecrement = 0;
+    if (sizeFirst >= sizeSecond) {
+        firstDecrement = 1;
+    }
+    if (sizeSecond >= sizeFirst) {
+        secondCell = secondCell->next;
+        sizeSecond--;
+    }
+    if (firstDecrement) {
+        firstCell = firstCell->next;
+        sizeFirst--;
+    }
+
+    return addDigitCells(firstCell, sizeFirst, secondCell, sizeSecond);
+}
+
 UnsignedHugeInt *addUnsignedHugeInt(UnsignedHugeInt *first, UnsignedHugeInt *second) {
+    int sizeFirst = countDigitsFromUnsignedHugeInt(first);
+    int sizeSecond = countDigitsFromUnsignedHugeInt(second);
+
+    return addDigitCells(first->first, sizeFirst, second->first, sizeSecond);
+}
+
+int countDigitCells(DigitCell *cell) {
+    if (cell == NULL) return 0;
+    return 1 + countDigitCells(cell->next);
+}
+
+int countDigitsFromUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt) {
+    if (unsignedHugeInt == NULL) return 0;
+    return countDigitCells(unsignedHugeInt->first);
 }
 
 void simplifyUnsignedHugeInt(UnsignedHugeInt *unsignedHugeInt) {
