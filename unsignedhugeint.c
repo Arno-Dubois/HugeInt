@@ -62,10 +62,22 @@ UnsignedHugeInt *addDigitCells(DigitCell *firstCell, int sizeFirst, DigitCell *s
         result->first = createDigitCell(addTwoChar(firstCell->digit, secondCell->digit));
         return result;
     }
+
+    DigitCell *currentCell = createDigitCell(0);
+
+    if (sizeFirst == sizeSecond) {
+        currentCell = createDigitCell(addTwoChar(firstCell->digit, secondCell->digit));
+    } else if (sizeFirst > sizeSecond) {
+        currentCell = createDigitCell(addTwoChar(firstCell->digit, '0'));
+    } else {
+        currentCell = createDigitCell(addTwoChar('0', secondCell->digit));
+    }
+
     unsigned short firstDecrement = 0;
     if (sizeFirst >= sizeSecond) {
         firstDecrement = 1;
     }
+
     if (sizeSecond >= sizeFirst) {
         secondCell = secondCell->next;
         sizeSecond--;
@@ -75,7 +87,18 @@ UnsignedHugeInt *addDigitCells(DigitCell *firstCell, int sizeFirst, DigitCell *s
         sizeFirst--;
     }
 
-    return addDigitCells(firstCell, sizeFirst, secondCell, sizeSecond);
+    UnsignedHugeInt *previousCell = addDigitCells(firstCell, sizeFirst, secondCell, sizeSecond);
+
+    UnsignedHugeInt *result = createUnsignedHugeInt();
+    result->first = currentCell;
+
+    if (previousCell->first != NULL) {
+        result->first->next = previousCell->first;
+        previousCell->first = NULL; // Transfer ownership
+    }
+
+    deleteUnsignedHugeInt(previousCell);
+    return result;
 }
 
 UnsignedHugeInt *addUnsignedHugeInt(UnsignedHugeInt *first, UnsignedHugeInt *second) {
